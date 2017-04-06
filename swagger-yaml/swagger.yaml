@@ -1,0 +1,91 @@
+---
+swagger: "2.0"
+info:
+  version: "2.0"
+  title: "harry-test-public API"
+host: "virtserver.swaggerhub.com"
+basePath: "/DiUS/MYOBEssentials/2.0"
+schemes:
+- "https"
+paths:
+  /businesses/{businessId}/bills/{billId}:
+    get:
+      operationId: "getBillById"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "businessId"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "billId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "200 response"
+        500:
+          description: "500 response"
+      x-amazon-apigateway-integration:
+        responses:
+          5\d{2}:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "## Example 500 response.\n{\n  #set($billId = $input.params('billId'))\n\
+                \  #set($bussinessId = $input.params('businessId'))\n\n  #if( $billId.length()\
+                \ == 0 )\n    \"Message\": \"Error: billId not valid\"\n  #elseif\
+                \ ( $bussinessId.length() == 0 )\n    \"Message\": \"Error: businessId\
+                \ not valid\"\n  #else\n    \"Message\": \"Internal Error\"\n  #end\n\
+                \n}"
+          2\d{2}:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "{\n  \"data\": {\n    \"type\": \"bills\", \n   \
+                \ \"id\": $input.params('billId')\n    \"attributes\": {\n      \"\
+                invoiceNumber\": \"EX00000000001\",\n      \"issueDate\": \"2017-03-30T00:00:00+10:00\"\
+                ,\n      \"dueDate\": \"2017-04-29T00:00:00+10:00\",\n      \"gstInclusive\"\
+                : true,\n      \"status\": \"OPEN\",\n      \"total\": \"111.00\"\
+                ,\n      \"gst\": \"10.09\",\n      \"amountPaid\": \"0.00\",\n  \
+                \    \"amountDue\": \"111.00\",\n      \"supplier\": { \n        \"\
+                id\": 13772370,\n        \"name\": \"Awesome Supplier\",\n       \
+                \ \"type\": \"Supplier\",\n        \"firstName\": \"Test\",\n    \
+                \    \"lastName\": \"Test\",\n        \"phone\": null,\n        \"\
+                mobile\": null,\n        \"contactEmails\": [],\n        \"reportable\"\
+                : false,\n        \"active\": true,\n        \"hasAllocationRules\"\
+                : false,\n        \"hasJournalTransactions\": false,\n        \"individual\"\
+                : false,\n        \"abn\": \"\",\n        \"ird\": \"\",\n       \
+                \ \"website\": null,\n        \"position\": null,\n        \"fax\"\
+                : null,\n        \"notes\": null,\n        \"billingAddress\": null,\n\
+                \        \"shippingAddress\": {\n            \"streetAddress1\": \"\
+                \",\n            \"streetAddress2\": \"\",\n            \"suburb\"\
+                : \"\",\n            \"state\": \"\",\n            \"postCode\": \"\
+                \",\n            \"country\": \"\"\n        },\n        \"differentBillingAddress\"\
+                : false,\n        \"customerBalance\": null,\n        \"supplierBalance\"\
+                : null,\n        \"accountsInfo\": null,\n        \"primaryEmail\"\
+                : \"\",\n        \"additionalEmails\": []\n      },\n      \"lineItems\"\
+                : [\n        {\n            \"itemId\": null,\n            \"description\"\
+                : \"some stuff\",\n            \"accountId\": 24555761,\n        \
+                \    \"unitOfMeasure\": \"Qty\",\n            \"quantity\": 1.0,\n\
+                \            \"unitPrice\": 111.0000,\n            \"taxCode\": \"\
+                GST\",\n            \"total\": 111.0,\n            \"totalExcludingGst\"\
+                : 100.91,\n            \"empty\": false\n        }, {\n          \
+                \  \"itemId\": 5,\n            \"description\": \"extra stuff 2\"\
+                ,\n            \"accountId\": 24555761,\n            \"unitOfMeasure\"\
+                : \"Qty\",\n            \"quantity\": 2.0,\n            \"unitPrice\"\
+                : 222.0000,\n            \"taxCode\": \"GST\",\n            \"total\"\
+                : 222.0,\n            \"totalExcludingGst\": 100.91,\n           \
+                \ \"empty\": false\n        }\n      ]\n    },\n    \"links\": {\n\
+                \      \"self\": \"http://localhost/businesses/$input.params('businessId')/bills/$input.params('billId')\"\
+                \n    }\n  }\n}"
+        requestTemplates:
+          application/json: "{\n  #set($billId = $input.params('billId'))\n  #set($bussinessId\
+            \ = $input.params('businessId'))\n  #set($testVar = $input.params('testVariable'))\
+            \ \n  \n  #if( $billId && $billId.length() > 0 && $bussinessId && $bussinessId.length()\
+            \ > 0 )\n    \"statusCode\": 200\n  #else\n    \"statusCode\": 500\n \
+            \ #end\n}"
+        passthroughBehavior: "when_no_templates"
+        type: "mock"
+definitions: {}
