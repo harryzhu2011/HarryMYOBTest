@@ -34,7 +34,7 @@ paths:
           5\d{2}:
             statusCode: "500"
             responseTemplates:
-              application/json: "## Example 500 response. catch all 5XX http code. \n{\n  #set($billId = $input.params('billId'))\n\
+              application/json: "## Example 500 response.\n{\n  #set($billId = $input.params('billId'))\n\
                 \  #set($bussinessId = $input.params('businessId'))\n\n  #if( $billId.length()\
                 \ == 0 )\n    \"Message\": \"Error: billId not valid\"\n  #elseif\
                 \ ( $bussinessId.length() == 0 )\n    \"Message\": \"Error: businessId\
